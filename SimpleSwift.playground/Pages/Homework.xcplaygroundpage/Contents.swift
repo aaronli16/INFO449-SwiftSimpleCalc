@@ -27,12 +27,71 @@ print("Welcome to the UW Calculator Playground")
 //: For this latter set of operations, it is safe to assume that `["count"]` (with no additional arguments) is 0, `["avg"]` is also 0, and `["fact"]` is 0. `["1", "fact"]` should return 1, and `["0", "fact"]` should also return 1. (Yes, 0-factorial is 1. True story.)
 //: 
 func calculate(_ args: [String]) -> Int {
-    return -1
+    let lastElement = args.last!
+    switch lastElement {
+        case "count":
+        return args.count - 1 // excluding the last element
+    case "avg":
+        if args.count == 1{
+            return 0
+        } // edge case to check ['avg']
+        var sum = 0
+        for i in 0..<(args.count - 1) {
+            sum += convertStringToInt(args[i])
+        }
+        return sum / (args.count - 1)
+    case "fact":
+        if args.count == 1 {
+                return 0
+            }
+        let factorialNum = convertStringToInt(args[0])
+        if factorialNum <= 1 {
+            return 1
+        } // 0! and 1! is just 1
+        var factorialSum = 1
+        for i in 2...factorialNum {
+                factorialSum *= i
+            }
+        return factorialSum
+    default:
+        let firstNum = convertStringToInt(args[0])
+        let operand = args[1]
+        let secondNum = convertStringToInt(args[2])
+        
+        switch operand {
+        case "+":
+            return firstNum + secondNum
+        case "-":
+            return firstNum - secondNum
+        case "*":
+            return firstNum * secondNum
+        case "/":
+            return firstNum / secondNum
+        case "%":
+            return firstNum % secondNum
+        default:
+            return 0
+        }
+    }
+    
+    
+        
 }
 
 func calculate(_ arg: String) -> Int {
-    return -1
+    let parts = arg.split(separator: " ") // Turns into an array of substrings
+    let args = parts.map{ String($0)} // turns the substrings into string, used chatgpt to help me figure this out since we need to pass in an array of strings not substrings
+    return calculate(args)
+    
 }
+
+func convertStringToInt(_ arg: String) -> Int {
+    guard let num = Int(arg) else { // change string nums to integer
+        return 0
+    }
+    return num
+}
+
 
 //: Below this are the test expressions/calls to verify if your code is correct.
 //:
@@ -85,7 +144,7 @@ calculate("5 fact") == 120
 //: Implement `calculate([String])` and `calculate(String)` to handle negative numbers. You need only make the tests below pass. (You do not need to worry about "fact"/factorial with negative numbers, for example.)
 //:
 //: This is worth 1 pt
-/*
+
 calculate(["2", "+", "-2"]) == 0
 calculate(["2", "-", "-2"]) == 4
 calculate(["2", "*", "-2"]) == -4
@@ -100,7 +159,7 @@ calculate("2 - -2") == 4
 calculate("-2 / 2") == -1
 
 calculate("1 -2 3 -4 5 count") == 5
-*/
+
  
 //: Implement `calculate([String])` and `calculate(String)` to use 
 //: and return floating-point values. You need only make the tests 
@@ -112,12 +171,71 @@ calculate("1 -2 3 -4 5 count") == 5
 //: Integer-based versions above.
 //: 
 //: This is worth 1 pt
-/*
+
 func calculate(_ args: [String]) -> Double {
-    return -1.0
+    let lastElement = args.last!
+    switch lastElement {
+        case "count":
+        return Double(args.count - 1) // excluding the last element
+    case "avg":
+        if args.count == 1{
+            return 0.0
+        } // edge case to check ['avg']
+        var sum = 0.0
+        for i in 0..<(args.count - 1) {
+            sum += convertStringToDouble(args[i])
+        }
+        return sum / Double(args.count - 1)
+    case "fact":
+        if args.count == 1 {
+            return 0.0
+            }
+        let factorialNum = convertStringToDouble(args[0])
+        if factorialNum <= 1 {
+            return 1.0
+        } // 0! and 1! is just 1
+        var factorialSum = 1.0
+        for i in 2...Int(factorialNum) {
+                factorialSum *= Double(i)
+            }
+        return factorialSum
+    default:
+        let firstNum = convertStringToDouble(args[0])
+        let operand = args[1]
+        let secondNum = convertStringToDouble(args[2])
+        
+        switch operand {
+        case "+":
+            return firstNum + secondNum
+        case "-":
+            return firstNum - secondNum
+        case "*":
+            return firstNum * secondNum
+        case "/":
+            return firstNum / secondNum
+        case "%":
+            return firstNum.truncatingRemainder(dividingBy: secondNum) // chat helped with this
+        default:
+            return 0.0
+        }
+    }
+    
+    
+        
 }
+
 func calculate(_ arg: String) -> Double {
-    return -1.0
+    let parts = arg.split(separator: " ") // Turns into an array of substrings
+    let args = parts.map{ String($0)} // turns the substrings into string, used chatgpt to help me figure this out since we need to pass in an array of strings not substrings
+    return calculate(args)
+    
+}
+
+func convertStringToDouble(_ arg: String) -> Double {
+    guard let num = Double(arg) else { // change string nums to double
+        return 0.0
+    }
+    return num
 }
 
 calculate(["2.0", "+", "2.0"]) == 4.0
@@ -127,4 +245,4 @@ calculate(["2.5", "*", "2.5"]) == 6.25
 calculate(["2.0", "/", "2.0"]) == 1.0
 calculate(["2.0", "%", "2.0"]) == 0.0
 calculate("1.0 2.0 3.0 4.0 5.0 count") == 5.0
-*/
+
