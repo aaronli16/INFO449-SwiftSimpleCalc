@@ -34,14 +34,14 @@ func calculate(_ args: [String]) -> Int {
     case "avg":
         if args.count == 1{
             return 0
-        } // edge case to check ['avg']
+        } // if args only has avg
         var sum = 0
         for i in 0..<(args.count - 1) {
             sum += convertStringToInt(args[i])
         }
         return sum / (args.count - 1)
     case "fact":
-        if args.count == 1 {
+        if args.count == 1 { // if args only has fact
                 return 0
             }
         let factorialNum = convertStringToInt(args[0])
